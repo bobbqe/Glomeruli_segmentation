@@ -33,25 +33,25 @@
 - Подготовка тайлов WSI изображений из TIFF файлов и тайлов маски из CSV файла содержащего для каждого индекса файла RLE закодированную разметку:
 
     - Настройка параметров в файле `config/defaults.py`:
-     - `_C.DATASETS.WSI_FOLDER` - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
-     - `_C.DATASETS.TRAIN_FOLDER` - путь к папке, где будут сохранены пары тайлов изображение-маска в формате PNG
-     - `_C.DATASETS.LABELS_CSV` - путь к CSV файлу состоящего из двух колонок: индекс и RLE закодированная разметка
+      - `_C.DATASETS.WSI_FOLDER` - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
+      - `_C.DATASETS.TRAIN_FOLDER` - путь к папке, где будут сохранены пары тайлов изображение-маска в формате PNG
+      - `_C.DATASETS.LABELS_CSV` - путь к CSV файлу состоящего из двух колонок: индекс и RLE закодированная разметка
     - запуск `python tiles_creator.py` для формирования датасета
 
 - **Обучение**:
-    - Настройка параметров в файле `config/defaults.py`:
-     Поддерживаются архитектуры, энкодеры и веса из библиотеки [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch "segmentation_models_pytorch"):
-     - `_C.MODEL.ARCHITECTURE` - имя архитектуры нейронной сети, определенное в `model/custom_models.py` в теле функции `build_model(cfg)`
-     - `_C.MODEL.ENCODER_NAME` - название энкодера
-     - `_C.MODEL.ENCODER_WEIGHTS` - предобученные веса
+    - Помимо разработанной архитектуры `UneXt101`, через параметры в файле `config/defaults.py` поддерживаются архитектуры, энкодеры и веса из библиотеки [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch "segmentation_models_pytorch"):
+      - `_C.MODEL.ARCHITECTURE` - имя архитектуры нейронной сети, определенное в `model/custom_models.py` в теле функции `build_model(cfg)`
+      - `_C.MODEL.ENCODER_NAME` - название энкодера
+      - `_C.MODEL.ENCODER_WEIGHTS` - предобученные веса
+    - Лосс функции, доступные для обучения из `utils/losses.py`: symmetric_lovasz, dice_coef_loss, sym_lovasz_dice, loss_focal_corrected, loss_sym_lovasz_focal_corrected, sym_lovasz_focal_dice.
 
     - запуск обучения `python train_net.py`
 
 - **Предсказание**:
     - Настройка параметров в файле `config/defaults.py`:
-     - `_C.TEST.WSI_FOLDER` - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
-     - `_C.TEST.MODEL_WEIGHTS_FOLDER` - путь к папке, содержащей сохраненные веса обученных моделей
-     - `_C.TEST.TH` - порог бинаризации предсказаний для получения бинарной сегментационной маски
+      - `_C.TEST.WSI_FOLDER` - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
+      - `_C.TEST.MODEL_WEIGHTS_FOLDER` - путь к папке, содержащей сохраненные веса обученных моделей
+      - `_C.TEST.TH` - порог бинаризации предсказаний для получения бинарной сегментационной маски
     
     - запуск скрипта использования `python test_net.py`
 

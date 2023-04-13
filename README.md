@@ -1,6 +1,8 @@
 # Glomeruli_segmentation
 **Glomeruli_segmentation** - это библиотека на языке Python для глубокого обучения на основе сверточных нейронных сетей (CNN) для сегментации изображений гистопатологических снимков почек.
 
+![GitHub version](https://img.shields.io/static/v1?label=version&message=1.0&color=blue) ![GitHub last commit](https://img.shields.io/static/v1?label=last%20commit&message=apr%202023&color=red) ![GitHub issues](https://img.shields.io/static/v1?label=open%20issues&message=0&color=green)
+
 ## Особенности
 - Предобработка данных: загрузка и предобработка изображений гистопатологии почек из различных форматов, включая изображения целых гистологических снимков (WSI) в формате TIFF.
 - Разбиение WSI на тайлы: автоматическое разбиение гистологических снимков почек в формате WSI на тайлы с заданным размером, что упрощает обработку больших изображений и позволяет эффективно использовать их в процессе обучения моделей.
@@ -27,13 +29,35 @@
    pip install -r requirements.txt 
    ```
    
-## Использование проеката
+## Использование проекта
 - Подготовка тайлов WSI изображений из TIFF файлов и тайлов маски из CSV файла содержащего для каждого индекса файла RLE закодированную разметку:
 
-    - Настройка параметров:
-        - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
-        - путь к CSV файлу состоящего из двух колонок: индекс и RLE закодированная разметка
-        - необходимый коэффициент изменения масштаба изображения
-        - необходимый размер тайла в пикселях
+    - Настройка параметров в файле `config/defaults.py`:
+     - `_C.DATASETS.WSI_FOLDER` - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
+     - `_C.DATASETS.TRAIN_FOLDER` - путь к папке, где будут сохранены пары тайлов изображение-маска в формате PNG
+     - `_C.DATASETS.LABELS_CSV` - путь к CSV файлу состоящего из двух колонок: индекс и RLE закодированная разметка
+    - запуск `python tiles_creator.py` для формирования датасета
 
-    - `python tiles_creator.py`
+- **Обучение**:
+    - Настройка параметров в файле `config/defaults.py`:
+     Поддерживаются архитектуры, энкодеры и веса из библиотеки [segmentation_models_pytorch](https://github.com/qubvel/segmentation_models.pytorch "segmentation_models_pytorch"):
+     - `_C.MODEL.ARCHITECTURE` - имя архитектуры нейронной сети, определенное в `model/custom_models.py` в теле функции `build_model(cfg)`
+     - `_C.MODEL.ENCODER_NAME` - название энкодера
+     - `_C.MODEL.ENCODER_WEIGHTS` - предобученные веса
+
+    - запуск обучения `python train_net.py`
+
+- **Предсказание**:
+    - Настройка параметров в файле `config/defaults.py`:
+     - `_C.TEST.WSI_FOLDER` - путь к папке, содержащей TIFF файлы с иметами index.tiff, где index - уникальный для кажлого файла индекс
+     - `_C.TEST.MODEL_WEIGHTS_FOLDER` - путь к папке, содержащей сохраненные веса обученных моделей
+     - `_C.TEST.TH` - порог бинаризации предсказаний для получения бинарной сегментационной маски
+    
+    - запуск скрипта использования `python test_net.py`
+
+## Датасет
+Оригинальный датасет, используемый для обучения моделей и решения задачи может быть найден [здесь](https://www.kaggle.com/competitions/hubmap-organ-segmentation/data "здесь").
+
+
+## Лицензия
+Glomeruli_segmentation model is licensed under MIT License, therefore the derived weights are also shared under the same license. 

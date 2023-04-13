@@ -58,6 +58,9 @@
 ## Датасет
 Оригинальный датасет, используемый для обучения моделей и решения задачи может быть найден [здесь](https://www.kaggle.com/competitions/hubmap-organ-segmentation/data "здесь").
 
+## Веса обученной модели UneXt101
+Веса обученной модели расположены по ссылке, указанной в файле `model/checkpoints/saved_checkpoints/weights_link_dwnld.txt`.
+
 
 ## Лицензия
 Glomeruli_segmentation model is licensed under MIT License, therefore the derived weights are also shared under the same license. 

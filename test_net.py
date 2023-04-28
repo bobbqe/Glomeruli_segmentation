@@ -40,10 +40,11 @@ def main():
     device = cfg.MODEL.DEVICE
     for path in models_pths:
         state_dict = torch.load(os.path.join(cfg.TEST.MODEL_WEIGHTS_FOLDER,path), map_location=torch.device('cpu'))
-        model = build_model(cfg)
+        model = build_model(cfg, is_train=False)
         model.load_state_dict(state_dict)
         model.float()
         model.eval()
+        model.half()
         model.to(device)
         models_pred.append(model)
         del state_dict
@@ -210,7 +211,7 @@ def make_one_prediction(img, idx, img_shape, p0, p1, models_pred):
     bs = cfg.TEST.IMS_PER_BATCH
     ds = HuBMAPTestDataset(idxs, cfg)
     dl = DataLoader(ds,bs,num_workers=NUM_WORKERS,shuffle=False,pin_memory=True)
-    mp = Model_pred_test(models_pred,dl,cfg, models_pred)
+    mp = Model_pred_test(models_pred,dl,cfg)
     mask_sz = cfg.TEST.MASK_SZ
     print("  > Tiles selected! Time =", time.time() - start)
 
@@ -246,4 +247,6 @@ def make_one_prediction(img, idx, img_shape, p0, p1, models_pred):
     print("Tiles saved! Time =", time.time() - start)
 
 if __name__ == '__main__':
+    zero_time = time.time()
     main()
+    print("--- Общее время работы библиотеки для предсказания : %s seconds ---" % (time.time() - zero_time))

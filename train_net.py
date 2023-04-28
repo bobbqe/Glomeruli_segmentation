@@ -40,7 +40,7 @@ def train(cfg):
     dice = Dice_th_pred(np.arange(0.2,0.7,0.01))
     for fold in range(nfolds):
         logger.info(f'Fold {fold}')
-        model = build_model(cfg)
+        model = build_model(cfg, is_train=True)
         suffix_name = f'reduction_{cfg.INPUT.SIZE_REDUCTION_TRAIN}_{cfg.MODEL.ARCHITECTURE}_{cfg.MODEL.ENCODER_NAME}_fold_{fold}'
         ds_t = HuBMAPDataset(data_dir=train_folder, fold=fold, train=True, tfms=transforms, cfg = cfg)
         ds_v = HuBMAPDataset(data_dir=train_folder, fold=fold, train=False, cfg = cfg)

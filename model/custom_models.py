@@ -3,13 +3,14 @@ import torch.nn as nn
 import torch
 from fastai.vision.all import *
 import segmentation_models_pytorch as smp
+from torchvision.models.resnet import ResNet, Bottleneck
 
-def build_model(cfg):
+def build_model(cfg, is_train):
     model_architecture = cfg.MODEL.ARCHITECTURE
     encoder_name = cfg.MODEL.ENCODER_NAME
     encoder_weights = cfg.MODEL.ENCODER_WEIGHTS
     if model_architecture == 'UneXt101':
-        model = UneXt101()
+        model = UneXt101(is_train=is_train)
     else:
         model = getattr(smp, model_architecture)(encoder_name=encoder_name, encoder_weights=encoder_weights, classes=cfg.MODEL.NUM_CLASSES, activation=None)
     return model
@@ -103,12 +104,15 @@ class ASPP(nn.Module):
                 m.bias.data.zero_()
 
 class UneXt101(nn.Module):
-    def __init__(self, stride=1, **kwargs):
+    def __init__(self, is_train=True, stride=1, **kwargs):
         super().__init__()
         #encoder
-        self.m = torch.hub.load('facebookresearch/semi-supervised-ImageNet1K-models',
+        if is_train:
+            m = torch.hub.load('facebookresearch/semi-supervised-ImageNet1K-models',
                            'resnext101_32x16d_ssl')
-        m = self.m
+        else:
+            m = ResNet(Bottleneck, [3, 4, 23, 3], groups=32, width_per_group=16)
+
         self.enc0 = nn.Sequential(m.conv1, m.bn1, nn.ReLU(inplace=True))
         self.enc1 = nn.Sequential(nn.MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1),
                             m.layer1) #256

@@ -22,7 +22,7 @@
 
 Необходимо установить следующие зависимости:
    ```bash
-   - Python 3.x
+   - Python 3.7.x
    - albumentations==0.5.2
    - efficientnet-pytorch==0.6.3
    - fastai==2.7.10

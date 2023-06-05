@@ -90,6 +90,7 @@ _C.DATASETS.LABELS_CSV: ./data/datasets/BinarySegmentation/id.csv
 _C.DATASETS.TRAIN_FOLDER: ./data/datasets/BinarySegmentation_1024/
 ```
 - запустить скрипт `python train_net.py`
+
 Мы провели обучение нейронной сети UneXt101 с энкодером resnext101_32x16d, результаты предсказаний моделей, обученных без дополнительных правок приведены ниже в виде троек изображений: входное изображение - разметка GT - предсказания модели. В заголовке изображения приведены соответсвтующие значения метрики Dice. 
 
 ![1frame288](https://github.com/bobbqe/Glomeruli_segmentation/assets/33893515/8e6dff99-289a-4c11-b838-cd641d93239d)
@@ -117,7 +118,8 @@ _C.DATASETS.TRAIN_FOLDER: ./data/datasets/BinarySegmentation_1024/
 - Указать другую функцию потерь
    `_C.SOLVER.LOSS_FUNCTION_NAME = 'dice_coef_loss' `
 - запустить скрипт `python train_net.py`
-Мы провевели обучение нейронной сети Unet с энкодером resnet34, результаты предсказаний моделей, обученных без дополнительных правок приведены ниже в виде троек изображений: входное изображение - разметка GT - предсказания модели. В заголовке изображения приведены соответсвтующие значения метрики Dice. 
+
+Мы провели обучение нейронной сети Unet с энкодером resnet34, результаты предсказаний моделей, обученных без дополнительных правок приведены ниже в виде троек изображений: входное изображение - разметка GT - предсказания модели. В заголовке изображения приведены соответсвтующие значения метрики Dice. 
 ![145](https://github.com/bobbqe/Glomeruli_segmentation/assets/33893515/ba09aa2d-b9b8-42a5-af9c-54a5c3449fd9)
 ![275](https://github.com/bobbqe/Glomeruli_segmentation/assets/33893515/179bf2b6-7d05-4d66-a620-399343df9cba)
 ![554](https://github.com/bobbqe/Glomeruli_segmentation/assets/33893515/133c6b0f-b477-4555-960a-4e56c2426fde)

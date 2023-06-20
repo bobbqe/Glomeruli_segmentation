@@ -13,6 +13,7 @@ fastdownload==0.0.7
 fastprogress==1.0.3
 fonttools==4.38.0
 idna==3.4
+imagecodecs==2021.8.26
 imageio==2.24.0
 imgaug==0.4.0
 importlib-metadata==6.0.0
